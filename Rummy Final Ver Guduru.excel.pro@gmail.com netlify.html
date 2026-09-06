@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rummy Elite Scoreboard - High Sunlight Contrast Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif !important;
+            background: #f1f5f9 !important;
+            color: #0f172a !important;
+            min-height: 100vh;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .glass-panel {
+            background: #ffffff !important;
+            border: 2px solid #cbd5e1 !important;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+            color: #0f172a !important;
+        }
+
+        .glass-card {
+            background: #f8fafc !important;
+            border: 2px solid #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+
+        .casino-felt {
+            background: #fee2e2 !important;
+            border: 2px solid #ef4444 !important;
+            color: #7f1d1d !important;
+        }
+
+        .bg-slate-900\/80, .bg-slate-900\/60, .bg-slate-900\/40, .bg-slate-900, .bg-slate-950 {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+        }
+
+        .bg-slate-800, .bg-slate-800\/80 {
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        .text-slate-100, .text-slate-200, .text-slate-300, .text-white {
+            color: #0f172a !important;
+            font-weight: 700;
+        }
+
+        .text-slate-400, .text-slate-500 {
+            color: #475569 !important;
+            font-weight: 600;
+        }
+
+        input[type="text"], input[type="number"] {
+            background-color: #ffffff !important;
+            border: 2px solid #64748b !important;
+            color: #0f172a !important;
+            font-weight: 800 !important;
+            font-size: 13px !important;
+        }
+
+        input:focus {
+            border-color: #047857 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.25) !important;
+        }
+
+        table {
+            border: 2px solid #475569 !important;
+        }
+
+        table th {
+            background-color: #e2e8f0 !important;
+            color: #0f172a !important;
+            border: 1px solid #64748b !important;
+            font-weight: 800 !important;
+        }
+
+        table td {
+            border: 1px solid #94a3b8 !important;
+            color: #0f172a !important;
+        }
+
+        .border-slate-800, .border-slate-700, .border-slate-700\/80, .border-slate-700\/60, .border-slate-800\/60 {
+            border-color: #94a3b8 !important;
+        }
+
+        .dev-side-badge {
+            background: #ecfdf5 !important;
+            border: 2px solid #059669 !important;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15) !important;
+        }
+        
+        .dev-side-badge * {
+            color: #065f46 !important;
+        }
+
+        .btn-emerald {
+            background: #047857 !important;
+            color: #ffffff !important;
+            border: 2px solid #065f46 !important;
+            font-weight: 800 !important;
+        }
+        .btn-emerald:hover {
+            background: #065f46 !important;
+        }
+
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(-3%); }
+            50% { transform: translateY(3%); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 2s infinite ease-in-out;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #e2e8f0; }
+        ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 3px; }
+    </style>
+</head>
+<body class="p-3 sm:p-4 flex flex-col justify-between">
+
+    <!-- App Container -->
+    <div class="max-w-7xl mx-auto w-full flex flex-col space-y-3">
+        
+        <!-- Header -->
+        <header class="glass-panel rounded-2xl py-3 px-4 flex flex-wrap justify-between items-center gap-4 shrink-0">
+            <div>
+                <h1 class="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+                    ♠️ RUMMY ELITE SCOREBOARD ♣️
+                </h1>
+                <p id="header-reentry-info" class="text-[11px] text-slate-700 font-bold">Target: 201 Pts | Re-entry Allowed up to 180 Pts (Must Rejoin on Next Deal)</p>
+            </div>
+            
+            <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+                <button onclick="openHistoryModal()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 border-2 border-slate-400 px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 shadow-sm">
+                    📜 History & Settlements
+                </button>
+
+                <span id="storage-status" class="text-[10px] text-emerald-800 bg-emerald-100 border border-emerald-500 px-2.5 py-1 rounded-full font-bold hidden">
+                    💾 IndexedDB Saved
+                </span>
+
+                <div class="dev-side-badge px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-sm">
+                    <span class="text-xs">✨</span>
+                    <div class="text-left">
+                        <div class="text-[8px] uppercase tracking-wider text-emerald-700 font-extrabold leading-none">Developer</div>
+                        <div class="text-[11px] font-extrabold text-emerald-950 tracking-wide">Guduru Sathish Kumar</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Setup Screen -->
+        <div id="setup-screen" class="glass-panel rounded-2xl p-6 max-w-4xl mx-auto my-4 w-full">
+            <h2 class="text-base font-bold mb-4 text-slate-900 flex items-center justify-between">
+                <span>⚙️ Game Setup & Configuration</span>
+                <button id="resume-btn" onclick="resumeGame()" class="text-xs bg-amber-100 text-amber-900 border-2 border-amber-500 px-3 py-1 rounded-lg font-bold hover:bg-amber-200 transition hidden">
+                    🔄 Resume Saved Game
+                </button>
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="md:col-span-2 space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">Bet Amount / Points Value (₹)</label>
+                        <input type="number" id="bet-input" value="100" placeholder="Enter bet amount..." 
+                            class="w-full rounded-xl px-3.5 py-2.5 text-xs focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1">Add Players (In Seating Sequence)</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="player-input" placeholder="Enter player name..." 
+                                class="flex-1 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none transition">
+                            <button onclick="addPlayer()" class="btn-emerald text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-md transition">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="player-list" class="flex flex-wrap gap-2 min-h-[42px] max-h-24 overflow-y-auto p-2.5 rounded-xl bg-slate-100 border-2 border-slate-300">
+                        <span class="text-slate-500 italic text-xs py-1">No players added yet. Add at least 2 players.</span>
+                    </div>
+
+                    <button onclick="startGame()" id="start-btn" disabled 
+                        class="w-full bg-slate-300 text-slate-500 font-bold py-3 rounded-xl cursor-not-allowed transition text-xs">
+                        Start Game
+                    </button>
+                </div>
+
+                <!-- Custom Points Config Tab -->
+                <div class="glass-card rounded-2xl p-4 flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="flex items-center gap-1.5 pb-2 border-b border-slate-300 mb-3">
+                            <span class="text-sm">🎯</span>
+                            <h3 class="font-bold text-xs text-emerald-800 uppercase tracking-wide">Points Config</h3>
+                        </div>
+                        <p class="text-[10px] text-slate-600 font-medium mb-3">Modify standard drop points (20/40/80/80) or the target ceiling.</p>
+                        
+                        <div class="space-y-2.5 text-xs">
+                            <label class="flex items-center justify-between bg-slate-200 p-2.5 rounded-xl border border-slate-300 cursor-pointer hover:border-emerald-600 transition">
+                                <span class="text-slate-900 font-bold">Enable Custom Points</span>
+                                <input type="checkbox" id="rule-custom-points" onchange="toggleCustomPoints()" class="w-4 h-4 accent-emerald-600 rounded cursor-pointer">
+                            </label>
+
+                            <div id="custom-points-wrapper" class="hidden bg-slate-200 p-2.5 rounded-xl border border-slate-300 grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] text-slate-700 font-bold">Drop</label>
+                                    <input type="number" id="custom-drop" value="20" class="w-full rounded-lg px-2 py-1.5 text-xs text-center">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-slate-700 font-bold">Mid Drop</label>
+                                    <input type="number" id="custom-mid-drop" value="40" class="w-full rounded-lg px-2 py-1.5 text-xs text-center">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-slate-700 font-bold">Full Count</label>
+                                    <input type="number" id="custom-full-count" value="80" class="w-full rounded-lg px-2 py-1.5 text-xs text-center">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-slate-700 font-bold">Wrong Show</label>
+                                    <input type="number" id="custom-wrong-show" value="80" class="w-full rounded-lg px-2 py-1.5 text-xs text-center">
+                                </div>
+                                <div class="col-span-2 pt-1 border-t border-slate-400 mt-1">
+                                    <label class="text-[10px] text-amber-800 font-extrabold">Target Score (Points to Out)</label>
+                                    <input type="number" id="custom-target-score" value="201" class="w-full rounded-lg px-2 py-1.5 text-xs font-bold text-center">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-[9px] text-slate-600 text-center font-semibold pt-1 border-t border-slate-300">
+                        Scores save to IndexedDB automatically after every round.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Dashboard -->
+        <div id="game-screen" class="hidden flex flex-col space-y-3">
+            <div class="glass-panel rounded-xl py-2.5 px-4 flex flex-wrap justify-between items-center gap-3 shrink-0">
+                <div>
+                    <h3 class="font-extrabold text-xs sm:text-sm text-slate-900 flex items-center gap-2" id="game-info-bar">
+                        <span>💰 Bet Pool: ₹0</span>
+                    </h3>
+                    <p class="text-[11px] text-amber-800 font-extrabold flex items-center gap-1.5" id="distributer-info">
+                        🎴 Card Distributer: -
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2 items-center">
+                    <button onclick="undoLastAction()" id="undo-btn" disabled class="bg-slate-300 text-slate-500 border border-slate-400 font-bold px-3 py-2 rounded-xl text-xs transition cursor-not-allowed">
+                        ↩️ Undo
+                    </button>
+                    <button onclick="triggerMidGameSettlement()" class="bg-teal-700 hover:bg-teal-800 text-white font-extrabold px-3.5 py-2 rounded-xl text-xs shadow transition border border-teal-900 flex items-center gap-1.5">
+                        🤝 Mid-Game Settlement
+                    </button>
+                    <button id="add-midgame-btn" onclick="openMidGameAddModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-2 rounded-xl text-xs shadow transition border border-indigo-800">
+                        ➕ Add Mid-Game
+                    </button>
+                    <button onclick="startNewGameFromDashboard()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow transition">
+                        ✨ New Game
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scoreboard Matrix Layout -->
+            <div id="dashboard-layout" class="grid grid-cols-1 lg:grid-cols-4 gap-3">
+                <div id="matrix-container" class="lg:col-span-3 space-y-3 flex flex-col">
+                    <div class="glass-panel rounded-xl overflow-hidden flex flex-col">
+                        <div class="py-2.5 px-4 bg-slate-200 border-b-2 border-slate-400 font-bold text-slate-900 text-xs sm:text-sm flex justify-between items-center shrink-0">
+                            <span class="flex items-center gap-2">📊 Scoreboard Matrix (Auto-advances when all scores are set)</span>
+                            <span class="text-[11px] text-slate-700 font-bold">Turn Sequence</span>
+                        </div>
+                        <div class="overflow-x-auto flex-1 p-2">
+                            <table id="matrix-table" class="w-full text-left border-collapse text-xs sm:text-sm bg-white">
+                                <!-- Dynamic Score Rows -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sidebar-container" class="space-y-3 flex flex-col shrink-0">
+                    <div class="glass-panel rounded-xl p-3.5 space-y-2 border-2 border-amber-400 bg-amber-50">
+                        <h3 class="font-extrabold text-xs sm:text-sm text-amber-900 border-b border-amber-300 pb-2 flex items-center justify-between">
+                            <span class="flex items-center gap-1.5">🔄 Re-entry Log</span>
+                            <span class="text-[10px] bg-amber-200 text-amber-950 border border-amber-400 px-2 py-0.5 rounded-full font-extrabold" id="reentry-count">0 Re-entries</span>
+                        </h3>
+                        <div id="reentry-log-list" class="space-y-1.5 max-h-24 overflow-y-auto">
+                            <p class="text-[11px] text-slate-600 font-medium italic">No re-entries recorded yet.</p>
+                        </div>
+                    </div>
+
+                    <div class="casino-felt rounded-xl p-3.5 space-y-2">
+                        <h3 class="font-extrabold text-xs sm:text-sm text-red-900 border-b border-red-300 pb-2 flex items-center justify-between">
+                            <span class="flex items-center gap-1.5">⚠️ Mandatory Play</span>
+                            <span id="mandatory-threshold-badge" class="text-[10px] bg-red-200 text-red-950 border border-red-400 px-2 py-0.5 rounded-full font-extrabold"> - </span>
+                        </h3>
+                        <div id="mandatory-play-list" class="space-y-1.5 max-h-24 overflow-y-auto"></div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl p-3.5 space-y-2.5 flex flex-col">
+                        <h3 class="font-extrabold text-xs sm:text-sm text-slate-900 border-b border-slate-300 pb-2 flex items-center gap-2">
+                            📊 Live Casino Analytics
+                        </h3>
+                        <div id="stats-content" class="grid grid-cols-1 gap-2.5"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center text-[10px] text-slate-600 font-bold shrink-0 pt-2">
+            Card Game Scoreboard App &bull; Crafted & Developed by Guduru Sathish Kumar
+        </footer>
+    </div>
+
+    <!-- Settlement Calculation & Modal -->
+    <div id="settlement-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 z-50">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-5 border-4 border-teal-600 flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center pb-3 border-b-2 border-slate-200">
+                <div>
+                    <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                        <span>🤝 Mid-Game Cash Settlement Breakdown</span>
+                    </h2>
+                    <p class="text-[11px] text-slate-600 font-bold mt-0.5" id="settlement-modal-subtitle"></p>
+                </div>
+                <button onclick="closeSettlementModal()" class="text-slate-500 hover:text-slate-800 font-black text-xl">&times;</button>
+            </div>
+
+            <div class="my-3 overflow-y-auto flex-1 space-y-3 pr-1">
+                <!-- Live Distribution Math Cards -->
+                <div id="settlement-math-summary" class="bg-teal-50 border-2 border-teal-300 rounded-2xl p-3.5 text-xs text-teal-950 space-y-2">
+                    <div class="flex items-center justify-between border-b border-teal-200 pb-1.5">
+                        <span class="font-extrabold text-[11px] uppercase tracking-wide text-teal-900">📊 Current Match Pool Math</span>
+                        <span id="math-pool-total" class="font-black text-xs text-emerald-800 bg-white px-2 py-0.5 rounded-lg border border-teal-300">Total Pool: ₹0</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-[11px] pt-1">
+                        <div class="bg-white p-2.5 rounded-xl border border-teal-200">
+                            <div class="text-[9px] font-black uppercase text-teal-700">Drops Portion</div>
+                            <div class="font-extrabold text-slate-900 mt-0.5" id="math-drops-pool">₹0</div>
+                            <div class="text-[10px] text-slate-600 font-semibold" id="math-drops-detail">0 drops total (₹0 / drop)</div>
+                        </div>
+
+                        <div class="bg-white p-2.5 rounded-xl border border-teal-200">
+                            <div class="text-[9px] font-black uppercase text-teal-700">Extra Points Portion</div>
+                            <div class="font-extrabold text-slate-900 mt-0.5" id="math-points-pool">₹0</div>
+                            <div class="text-[10px] text-slate-600 font-semibold" id="math-points-detail">0 pts total (₹0 / pt)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table id="settlement-table" class="w-full text-left border-collapse text-xs bg-white">
+                        <!-- Dynamic Settlement Table Content -->
+                    </table>
+                </div>
+
+                <!-- Mandatory Checkbox Confirmation -->
+                <div id="settlement-confirm-section" class="bg-amber-50 border-2 border-amber-300 p-3 rounded-xl">
+                    <label class="flex items-center gap-2.5 cursor-pointer">
+                        <input type="checkbox" id="settlement-confirm-checkbox" onchange="toggleSettlementConfirm()" 
+                            class="w-5 h-5 accent-teal-700 rounded cursor-pointer">
+                        <span class="text-xs font-bold text-amber-950">
+                            I confirm this settlement breakdown with all players and wish to conclude match.
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t-2 border-slate-200 flex flex-wrap justify-between items-center gap-2">
+                <button onclick="saveAndConcludeSettlement()" id="settle-finish-btn" disabled 
+                    class="bg-slate-300 text-slate-500 font-extrabold px-4 py-2.5 rounded-xl text-xs transition cursor-not-allowed border border-slate-400">
+                    💾 Save & Conclude Game
+                </button>
+                <button onclick="closeSettlementModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2.5 rounded-xl text-xs transition border border-slate-400">
+                    Close (Keep Playing)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Winner Announcement Modal -->
+    <div id="winner-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 border-4 border-amber-400 text-center relative overflow-hidden animate-bounce-slow">
+            <div class="text-5xl mb-2">🏆👑🎉</div>
+            <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tight">Final Winner Announced!</h2>
+            <p class="text-xs text-slate-600 font-bold mt-1">Match Concluded & Scoreboard Saved</p>
+
+            <div class="my-4 bg-amber-50 border-2 border-amber-300 rounded-2xl p-4">
+                <div class="text-xs uppercase font-extrabold text-amber-800 tracking-wider">Grand Champion</div>
+                <div id="winner-name" class="text-2xl font-black text-emerald-800 mt-1">-</div>
+                <div id="winner-pool" class="text-lg font-black text-slate-900 mt-1">Prize Pool: ₹0</div>
+                <div id="winner-score" class="text-xs font-bold text-slate-600 mt-0.5">Final Score: 0 Pts</div>
+            </div>
+
+            <div class="mb-4 text-left max-h-36 overflow-y-auto pr-1 border-2 border-slate-200 rounded-xl p-2 bg-slate-50">
+                <div class="text-[10px] font-extrabold uppercase text-slate-600 mb-1">Final Standings:</div>
+                <div id="winner-standings-list" class="space-y-1 text-xs"></div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="startNewGameFromModal()" class="flex-1 btn-emerald text-white font-bold py-3 rounded-xl text-xs transition shadow-lg">
+                    ✨ Start New Game
+                </button>
+                <button onclick="closeWinnerModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-3 rounded-xl text-xs transition border border-slate-400">
+                    Close View
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History View Modal -->
+    <div id="history-modal" class="fixed inset-0 bg-slate-900/60 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-5 border-2 border-slate-400 max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-300">
+                <div class="flex items-center gap-2">
+                    <button id="history-tab-matches" onclick="switchHistoryTab('matches')" class="text-xs bg-slate-800 text-white font-bold px-3 py-1.5 rounded-lg">
+                        📜 Finished Matches
+                    </button>
+                    <button id="history-tab-settlements" onclick="switchHistoryTab('settlements')" class="text-xs bg-slate-200 text-slate-800 font-bold px-3 py-1.5 rounded-lg hover:bg-slate-300">
+                        🤝 Settlements History
+                    </button>
+                </div>
+                <button onclick="closeHistoryModal()" class="text-slate-500 hover:text-slate-800 font-black text-lg">&times;</button>
+            </div>
+
+            <div id="history-list-container" class="my-3 space-y-3 overflow-y-auto flex-1 pr-1">
+                <p class="text-xs text-slate-500 italic text-center py-4">No match history saved yet.</p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-300 flex justify-between items-center">
+                <button onclick="clearAllStoredData()" class="text-xs text-red-700 hover:text-red-900 font-bold px-3 py-1.5 rounded-lg border border-red-300 hover:bg-red-50 transition">
+                    🗑️ Clear All Stored Records
+                </button>
+                <button onclick="closeHistoryModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Detail Scoreboard Modal -->
+    <div id="history-detail-modal" class="fixed inset-0 bg-slate-900/75 hidden items-center justify-center p-3 sm:p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full p-5 border-2 border-slate-400 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-300">
+                <div>
+                    <h3 class="text-base font-extrabold text-slate-900" id="history-detail-title">📊 Full Scoreboard View</h3>
+                    <p class="text-xs text-slate-600 font-semibold" id="history-detail-subtitle"></p>
+                </div>
+                <button onclick="closeHistoryDetailModal()" class="text-slate-500 hover:text-slate-800 font-black text-xl">&times;</button>
+            </div>
+
+            <div class="my-3 overflow-x-auto flex-1 p-1">
+                <table id="history-detail-table" class="w-full text-left border-collapse text-xs sm:text-sm bg-white">
+                    <!-- Dynamic historical score matrix -->
+                </table>
+            </div>
+
+            <div class="pt-2 border-t border-slate-300 flex justify-end">
+                <button onclick="closeHistoryDetailModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-5 py-2 rounded-xl text-xs transition border border-slate-400">
+                    Back to History
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Score Entry Modal -->
+    <div id="score-modal" class="fixed inset-0 bg-slate-900/60 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-5 border-2 border-slate-400">
+            <h3 class="text-base font-extrabold mb-1 text-slate-900">Score for <span id="modal-player-name" class="text-emerald-700"></span></h3>
+            <p class="text-[11px] text-slate-600 font-medium mb-3">Select round outcome / drop type info for scoreboard entry:</p>
+            
+            <div id="modal-buttons-container" class="flex flex-col space-y-2 mb-3 max-h-64 overflow-y-auto pr-1"></div>
+
+            <div class="mb-3 pt-2 border-t border-slate-300">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-700 mb-1">Custom Score</label>
+                <div class="flex gap-2">
+                    <input type="number" id="custom-score-input" placeholder="Points..." 
+                        class="flex-1 rounded-xl px-3 py-2 text-xs focus:outline-none">
+                    <button onclick="submitCustomScore()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-2 rounded-xl text-xs transition">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <button onclick="closeModal()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 rounded-xl text-xs transition border border-slate-400">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Mid-Game Add Player Modal -->
+    <div id="midgame-add-modal" class="fixed inset-0 bg-slate-900/60 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-5 space-y-3 border-2 border-slate-400">
+            <h3 class="text-base font-extrabold text-slate-900">Add New Player Mid-Game</h3>
+            <p id="midgame-desc" class="text-[11px] text-slate-600 font-medium">Assigned drop score points per prior completed round.</p>
+            
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-700 mb-1">Player Name</label>
+                <input type="text" id="midgame-player-input" placeholder="Enter name..." 
+                    class="w-full rounded-xl px-3 py-2 text-xs focus:outline-none">
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button onclick="confirmMidGameAdd()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition shadow">
+                    Add Player
+                </button>
+                <button onclick="closeMidGameAddModal()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-2.5 rounded-xl text-xs transition border border-slate-400">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- IndexedDB & Scoreboard Core Logic -->
+    <script>
+        let players = [];
+        let currentRound = 1;
+        let betAmount = 100;
+        let gamePool = 0;
+        let activePlayerId = null;
+        let currentDealerIndex = 0;
+        let isGameStarted = false;
+        let historyStack = [];
+        let reentryLog = [];
+        let cachedHistoryRecords = [];
+        let cachedSettlementRecords = [];
+        let activeHistoryTab = 'matches';
+        let currentCalculatedSettlement = null;
+        let TARGET_SCORE = 201;
+        let gameFinished = false;
+
+        let gameRules = {
+            drop: 20,
+            midDrop: 40,
+            fullCount: 80,
+            wrongShow: 80
+        };
+
+        // --- IndexedDB Handler ---
+        const DB_NAME = "RummyEliteDB";
+        const DB_VERSION = 2;
+        const STORE_ACTIVE = "active_game";
+        const STORE_HISTORY = "game_history";
+        const STORE_SETTLEMENTS = "game_settlements";
+        let db = null;
+
+        function initIndexedDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onupgradeneeded = (e) => {
+                    const database = e.target.result;
+                    if (!database.objectStoreNames.contains(STORE_ACTIVE)) {
+                        database.createObjectStore(STORE_ACTIVE, { keyPath: "id" });
+                    }
+                    if (!database.objectStoreNames.contains(STORE_HISTORY)) {
+                        database.createObjectStore(STORE_HISTORY, { keyPath: "matchId", autoIncrement: true });
+                    }
+                    if (!database.objectStoreNames.contains(STORE_SETTLEMENTS)) {
+                        database.createObjectStore(STORE_SETTLEMENTS, { keyPath: "settlementId", autoIncrement: true });
+                    }
+                };
+                request.onsuccess = (e) => {
+                    db = e.target.result;
+                    resolve(db);
+                };
+                request.onerror = (e) => reject(e);
+            });
+        }
+
+        async function saveActiveGameToDB() {
+            if (!db) await initIndexedDB();
+            const tx = db.transaction(STORE_ACTIVE, "readwrite");
+            const store = tx.objectStore(STORE_ACTIVE);
+            const state = {
+                id: "current_match",
+                players,
+                currentRound,
+                betAmount,
+                gamePool,
+                currentDealerIndex,
+                isGameStarted,
+                historyStack,
+                reentryLog,
+                gameRules,
+                TARGET_SCORE,
+                gameFinished,
+                updatedAt: new Date().toISOString()
+            };
+            store.put(state);
+
+            const indicator = document.getElementById("storage-status");
+            indicator.classList.remove("hidden");
+            setTimeout(() => indicator.classList.add("hidden"), 1500);
+        }
+
+        async function loadActiveGameFromDB() {
+            if (!db) await initIndexedDB();
+            return new Promise((resolve) => {
+                const tx = db.transaction(STORE_ACTIVE, "readonly");
+                const store = tx.objectStore(STORE_ACTIVE);
+                const req = store.get("current_match");
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => resolve(null);
+            });
+        }
+
+        async function clearActiveGameFromDB() {
+            if (!db) await initIndexedDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_ACTIVE, "readwrite");
+                const store = tx.objectStore(STORE_ACTIVE);
+                const req = store.delete("current_match");
+                req.onsuccess = () => resolve(true);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function archiveGameToHistory(winnerInfo, isSettled = false) {
+            if (!db) await initIndexedDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_HISTORY, "readwrite");
+                const store = tx.objectStore(STORE_HISTORY);
+                const historyEntry = {
+                    date: new Date().toLocaleString(),
+                    totalRounds: currentRound,
+                    gamePool,
+                    betAmount,
+                    targetScore: TARGET_SCORE,
+                    winner: winnerInfo,
+                    isSettledMatch: isSettled,
+                    players: JSON.parse(JSON.stringify(players)),
+                    reentryLog: JSON.parse(JSON.stringify(reentryLog))
+                };
+                const req = store.add(historyEntry);
+                req.onsuccess = () => resolve(true);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function fetchGameHistory() {
+            if (!db) await initIndexedDB();
+            return new Promise((resolve) => {
+                const tx = db.transaction(STORE_HISTORY, "readonly");
+                const store = tx.objectStore(STORE_HISTORY);
+                const req = store.getAll();
+                req.onsuccess = () => resolve(req.result || []);
+                req.onerror = () => resolve([]);
+            });
+        }
+
+        async function deleteSingleHistoryDB(matchId) {
+            if (!db) await initIndexedDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_HISTORY, "readwrite");
+                const store = tx.objectStore(STORE_HISTORY);
+                const req = store.delete(matchId);
+                req.onsuccess = () => resolve(true);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function archiveSettlementToDB(settlementData) {
+            if (!db) await initIndexedDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_SETTLEMENTS, "readwrite");
+                const store = tx.objectStore(STORE_SETTLEMENTS);
+                const req = store.add(settlementData);
+                req.onsuccess = () => resolve(true);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function fetchSettlementHistory() {
+            if (!db) await initIndexedDB();
+            return new Promise((resolve) => {
+                const tx = db.transaction(STORE_SETTLEMENTS, "readonly");
+                const store = tx.objectStore(STORE_SETTLEMENTS);
+                const req = store.getAll();
+                req.onsuccess = () => resolve(req.result || []);
+                req.onerror = () => resolve([]);
+            });
+        }
+
+        async function deleteSingleSettlementDB(settlementId) {
+            if (!db) await initIndexedDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_SETTLEMENTS, "readwrite");
+                const store = tx.objectStore(STORE_SETTLEMENTS);
+                const req = store.delete(settlementId);
+                req.onsuccess = () => resolve(true);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function clearAllStoredData() {
+            if (confirm("Are you sure you want to permanently clear all stored match and settlement history?")) {
+                if (!db) await initIndexedDB();
+                const tx1 = db.transaction(STORE_HISTORY, "readwrite");
+                tx1.objectStore(STORE_HISTORY).clear();
+                const tx2 = db.transaction(STORE_SETTLEMENTS, "readwrite");
+                tx2.objectStore(STORE_SETTLEMENTS).clear();
+                renderHistoryContent();
+            }
+        }
+
+        // --- App Lifecycle ---
+        window.addEventListener("DOMContentLoaded", async () => {
+            await initIndexedDB();
+            checkSavedState();
+        });
+
+        async function checkSavedState() {
+            const saved = await loadActiveGameFromDB();
+            if (saved && saved.isGameStarted) {
+                document.getElementById("resume-btn").classList.remove("hidden");
+            }
+        }
+
+        function toggleCustomPoints() {
+            const isChecked = document.getElementById("rule-custom-points").checked;
+            const wrapper = document.getElementById("custom-points-wrapper");
+            if (isChecked) {
+                wrapper.classList.remove("hidden");
+            } else {
+                wrapper.classList.add("hidden");
+            }
+        }
+
+        function pushHistoryState() {
+            const snapshot = {
+                players: JSON.parse(JSON.stringify(players)),
+                currentRound,
+                betAmount,
+                gamePool,
+                currentDealerIndex,
+                isGameStarted,
+                reentryLog: JSON.parse(JSON.stringify(reentryLog)),
+                gameRules: JSON.parse(JSON.stringify(gameRules)),
+                TARGET_SCORE,
+                gameFinished
+            };
+            historyStack.push(snapshot);
+            updateUndoButtonUI();
+        }
+
+        function updateUndoButtonUI() {
+            const undoBtn = document.getElementById("undo-btn");
+            if (historyStack.length > 0) {
+                undoBtn.disabled = false;
+                undoBtn.classList.remove("bg-slate-300", "text-slate-500", "cursor-not-allowed");
+                undoBtn.classList.add("bg-amber-600", "hover:bg-amber-500", "text-white", "cursor-pointer", "shadow-md");
+            } else {
+                undoBtn.disabled = true;
+                undoBtn.classList.add("bg-slate-300", "text-slate-500", "cursor-not-allowed");
+                undoBtn.classList.remove("bg-amber-600", "hover:bg-amber-500", "text-white", "cursor-pointer", "shadow-md");
+            }
+        }
+
+        function undoLastAction() {
+            if (historyStack.length === 0) return;
+
+            const previousState = historyStack.pop();
+            players = previousState.players;
+            currentRound = previousState.currentRound;
+            betAmount = previousState.betAmount;
+            gamePool = previousState.gamePool;
+            currentDealerIndex = previousState.currentDealerIndex;
+            isGameStarted = previousState.isGameStarted;
+            gameFinished = previousState.gameFinished || false;
+            reentryLog = previousState.reentryLog || [];
+            if (previousState.gameRules) gameRules = previousState.gameRules;
+            if (previousState.TARGET_SCORE) TARGET_SCORE = previousState.TARGET_SCORE;
+
+            updateUndoButtonUI();
+            saveActiveGameToDB();
+            renderDashboard();
+        }
+
+        async function resumeGame() {
+            const state = await loadActiveGameFromDB();
+            if (!state) return;
+
+            players = state.players;
+            currentRound = state.currentRound;
+            betAmount = state.betAmount;
+            gamePool = state.gamePool;
+            currentDealerIndex = state.currentDealerIndex;
+            isGameStarted = state.isGameStarted;
+            gameFinished = state.gameFinished || false;
+            if (state.historyStack) historyStack = state.historyStack;
+            if (state.reentryLog) reentryLog = state.reentryLog;
+            if (state.gameRules) gameRules = state.gameRules;
+            if (state.TARGET_SCORE) TARGET_SCORE = state.TARGET_SCORE;
+
+            updateUndoButtonUI();
+
+            if (isGameStarted) {
+                document.getElementById("setup-screen").classList.add("hidden");
+                document.getElementById("game-screen").classList.remove("hidden");
+                renderDashboard();
+            }
+        }
+
+        document.getElementById("player-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") addPlayer();
+        });
+
+        document.getElementById("midgame-player-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") confirmMidGameAdd();
+        });
+
+        function addPlayer() {
+            const input = document.getElementById("player-input");
+            const name = input.value.trim();
+            if (!name) return;
+
+            players.push({
+                id: Date.now() + Math.random(),
+                name: name,
+                rounds: [], 
+                total: 0,
+                status: 'active',
+                eliminatedRound: null
+            });
+
+            input.value = "";
+            updateSetupUI();
+        }
+
+        function removePlayer(id) {
+            players = players.filter(p => p.id !== id);
+            updateSetupUI();
+        }
+
+        function updateSetupUI() {
+            const listEl = document.getElementById("player-list");
+            const startBtn = document.getElementById("start-btn");
+
+            if (players.length === 0) {
+                listEl.innerHTML = `<span class="text-slate-500 italic text-xs py-1">No players added yet. Add at least 2 players.</span>`;
+            } else {
+                listEl.innerHTML = players.map((p, index) => `
+                    <span class="inline-flex items-center bg-white border-2 border-slate-400 text-slate-900 px-2.5 py-1 rounded-xl text-xs font-bold gap-2 shadow-sm">
+                        <span class="bg-emerald-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] font-black">${index + 1}</span>
+                        ${p.name}
+                        <button onclick="removePlayer(${p.id})" class="text-red-600 hover:text-red-800 font-black ml-1 text-sm">&times;</button>
+                    </span>
+                `).join('');
+            }
+
+            if (players.length >= 2) {
+                startBtn.disabled = false;
+                startBtn.classList.remove("bg-slate-300", "text-slate-500", "cursor-not-allowed");
+                startBtn.classList.add("btn-emerald", "text-white", "cursor-pointer", "shadow-md");
+            } else {
+                startBtn.disabled = true;
+                startBtn.classList.add("bg-slate-300", "text-slate-500", "cursor-not-allowed");
+                startBtn.classList.remove("btn-emerald", "text-white", "cursor-pointer", "shadow-md");
+            }
+        }
+
+        function startGame() {
+            const betInput = parseFloat(document.getElementById("bet-input").value);
+            betAmount = isNaN(betInput) ? 100 : betInput;
+
+            const useCustom = document.getElementById("rule-custom-points").checked;
+            if (useCustom) {
+                gameRules.drop = parseInt(document.getElementById("custom-drop").value) || 20;
+                gameRules.midDrop = parseInt(document.getElementById("custom-mid-drop").value) || 40;
+                gameRules.fullCount = parseInt(document.getElementById("custom-full-count").value) || 80;
+                gameRules.wrongShow = parseInt(document.getElementById("custom-wrong-show").value) || 80;
+                TARGET_SCORE = parseInt(document.getElementById("custom-target-score").value) || 201;
+            } else {
+                gameRules.drop = 20;
+                gameRules.midDrop = 40;
+                gameRules.fullCount = 80;
+                gameRules.wrongShow = 80;
+                TARGET_SCORE = 201;
+            }
+
+            gamePool = betAmount * players.length;
+            currentDealerIndex = players.length - 1;
+            isGameStarted = true;
+            gameFinished = false;
+            historyStack = [];
+            reentryLog = [];
+
+            document.getElementById("setup-screen").classList.add("hidden");
+            document.getElementById("game-screen").classList.remove("hidden");
+            
+            players.forEach(p => { 
+                if(p.rounds.length === 0) p.rounds.push(null);
+                p.eliminatedRound = null;
+            });
+
+            updateUndoButtonUI();
+            saveActiveGameToDB();
+            renderDashboard();
+        }
+
+        async function startNewGameFromDashboard() {
+            if (confirm("Save this game to history and setup a new game?")) {
+                let sorted = [...players].sort((a,b) => a.total - b.total);
+                let winner = sorted[0] || { name: 'N/A', total: 0 };
+                await archiveGameToHistory({ name: winner.name, total: winner.total });
+                await clearActiveGameFromDB();
+                
+                players = [];
+                currentRound = 1;
+                gamePool = 0;
+                currentDealerIndex = 0;
+                isGameStarted = false;
+                gameFinished = false;
+                historyStack = [];
+                reentryLog = [];
+                
+                document.getElementById("game-screen").classList.add("hidden");
+                document.getElementById("setup-screen").classList.remove("hidden");
+                document.getElementById("resume-btn").classList.add("hidden");
+                updateSetupUI();
+            }
+        }
+
+        function startNewGameFromModal() {
+            closeWinnerModal();
+            clearActiveGameFromDB();
+            players = [];
+            currentRound = 1;
+            gamePool = 0;
+            currentDealerIndex = 0;
+            isGameStarted = false;
+            gameFinished = false;
+            historyStack = [];
+            reentryLog = [];
+            document.getElementById("game-screen").classList.add("hidden");
+            document.getElementById("setup-screen").classList.remove("hidden");
+            document.getElementById("resume-btn").classList.add("hidden");
+            updateSetupUI();
+        }
+
+        // Automatic Next Round Trigger Check
+        function checkAndAutoAdvanceRound() {
+            const activePlayers = players.filter(p => p.status === 'active');
+            
+            if (activePlayers.length === 1 && players.length > 1) {
+                announceWinner(activePlayers[0]);
+                return;
+            }
+
+            const isRoundComplete = activePlayers.length > 0 && activePlayers.every(p => {
+                const currentScore = p.rounds[currentRound - 1];
+                if (currentScore === undefined || currentScore === null || currentScore === "") return false;
+                if (typeof currentScore === 'object' && currentScore.isReentryRound && currentScore.roundScore === null) return false;
+                return true;
+            });
+
+            if (isRoundComplete && !gameFinished) {
+                setTimeout(() => {
+                    advanceToNextRound();
+                }, 400);
+            }
+        }
+
+        function advanceToNextRound() {
+            pushHistoryState();
+
+            currentRound++;
+            currentDealerIndex = (currentDealerIndex + 1) % players.length;
+
+            players.forEach(p => {
+                if(p.status === 'active') {
+                    p.rounds.push(null);
+                } else {
+                    p.rounds.push("-");
+                }
+            });
+
+            saveActiveGameToDB();
+            renderDashboard();
+        }
+
+        function announceWinner(winner) {
+            gameFinished = true;
+            saveActiveGameToDB();
+            archiveGameToHistory({ name: winner.name, total: winner.total });
+
+            document.getElementById("winner-name").innerText = winner.name;
+            document.getElementById("winner-pool").innerText = `Prize Pool: ₹${gamePool}`;
+            document.getElementById("winner-score").innerText = `Final Score: ${winner.total} Pts (${currentRound} Rounds)`;
+
+            let sortedPlayers = [...players].sort((a,b) => a.total - b.total);
+            document.getElementById("winner-standings-list").innerHTML = sortedPlayers.map((p, i) => `
+                <div class="flex justify-between items-center py-1 border-b border-slate-200">
+                    <span class="font-bold text-slate-800">${i + 1}. ${p.name} ${p.status === 'out' ? '(Out)' : '👑'}</span>
+                    <span class="font-black ${i === 0 ? 'text-emerald-700' : 'text-slate-600'}">${p.total} Pts</span>
+                </div>
+            `).join('');
+
+            document.getElementById("winner-modal").classList.remove("hidden");
+            document.getElementById("winner-modal").classList.add("flex");
+        }
+
+        function closeWinnerModal() {
+            document.getElementById("winner-modal").classList.remove("flex");
+            document.getElementById("winner-modal").classList.add("hidden");
+        }
+
+        function getDistributerName() {
+            if (players.length === 0) return "-";
+            if (currentDealerIndex >= players.length) currentDealerIndex = 0;
+            return players[currentDealerIndex].name;
+        }
+
+        function openModal(id) {
+            activePlayerId = id;
+            const player = players.find(p => p.id === id);
+            document.getElementById("modal-player-name").innerText = player.name;
+            document.getElementById("custom-score-input").value = "";
+
+            let modalBtnsHtml = `
+                <button onclick="submitScore(0, 'Rummy (Winner)')" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border-2 border-emerald-500 font-bold p-2.5 rounded-xl text-left flex items-center justify-between transition">
+                    <span class="text-xs sm:text-sm">🎴 Rummy (Winner)</span>
+                    <span class="text-[11px] font-extrabold bg-emerald-200 px-2 py-0.5 rounded">0 Pts</span>
+                </button>
+                <button onclick="submitScore(${gameRules.drop}, 'Drop')" class="w-full bg-amber-50 hover:bg-amber-100 text-amber-950 border-2 border-amber-400 font-bold p-2.5 rounded-xl text-left flex items-center justify-between transition">
+                    <span class="text-xs sm:text-sm">Drop</span>
+                    <span class="text-[11px] font-extrabold">${gameRules.drop} Pts</span>
+                </button>
+                <button onclick="submitScore(${gameRules.midDrop}, 'Middle Drop')" class="w-full bg-orange-50 hover:bg-orange-100 text-orange-950 border-2 border-orange-400 font-bold p-2.5 rounded-xl text-left flex items-center justify-between transition">
+                    <span class="text-xs sm:text-sm">Middle Drop</span>
+                    <span class="text-[11px] font-extrabold">${gameRules.midDrop} Pts</span>
+                </button>
+                <button onclick="submitScore(${gameRules.fullCount}, 'Full Count')" class="w-full bg-red-50 hover:bg-red-100 text-red-950 border-2 border-red-400 font-bold p-2.5 rounded-xl text-left flex items-center justify-between transition">
+                    <span class="text-xs sm:text-sm">Full Count</span>
+                    <span class="text-[11px] font-extrabold">${gameRules.fullCount} Pts</span>
+                </button>
+                <button onclick="submitScore(${gameRules.wrongShow}, 'Wrong Show')" class="w-full bg-purple-50 hover:bg-purple-100 text-purple-950 border-2 border-purple-400 font-bold p-2.5 rounded-xl text-left flex items-center justify-between transition">
+                    <span class="text-xs sm:text-sm">Wrong Show</span>
+                    <span class="text-[11px] font-extrabold">${gameRules.wrongShow} Pts</span>
+                </button>
+            `;
+
+            document.getElementById("modal-buttons-container").innerHTML = modalBtnsHtml;
+            document.getElementById("score-modal").classList.remove("hidden");
+            document.getElementById("score-modal").classList.add("flex");
+        }
+
+        function closeModal() {
+            activePlayerId = null;
+            document.getElementById("score-modal").classList.remove("flex");
+            document.getElementById("score-modal").classList.add("hidden");
+        }
+
+        function openMidGameAddModal() {
+            if (currentRound > 3) {
+                alert("New player addition is closed after Round 3!");
+                return;
+            }
+            document.getElementById("midgame-desc").innerText = `Assigned ${gameRules.drop} points per prior completed round.`;
+            document.getElementById("midgame-player-input").value = "";
+            document.getElementById("midgame-add-modal").classList.remove("hidden");
+            document.getElementById("midgame-add-modal").classList.add("flex");
+        }
+
+        function closeMidGameAddModal() {
+            document.getElementById("midgame-add-modal").classList.remove("flex");
+            document.getElementById("midgame-add-modal").classList.add("hidden");
+        }
+
+        function confirmMidGameAdd() {
+            if (currentRound > 3) {
+                alert("New player addition is closed after Round 3!");
+                closeMidGameAddModal();
+                return;
+            }
+
+            const nameInput = document.getElementById("midgame-player-input");
+            const name = nameInput.value.trim();
+            if (!name) return;
+
+            pushHistoryState();
+
+            gamePool += betAmount;
+
+            let penaltyPerRound = gameRules.drop;
+            let newRounds = [];
+            let totalScore = 0;
+
+            for (let i = 0; i < currentRound - 1; i++) {
+                newRounds.push({ pts: penaltyPerRound, label: 'Drop' });
+                totalScore += penaltyPerRound;
+            }
+            newRounds.push(null);
+
+            let status = totalScore >= TARGET_SCORE ? 'out' : 'active';
+
+            players.push({
+                id: Date.now() + Math.random(),
+                name: name,
+                rounds: newRounds,
+                total: totalScore,
+                status: status,
+                eliminatedRound: status === 'out' ? currentRound : null
+            });
+
+            closeMidGameAddModal();
+            saveActiveGameToDB();
+            renderDashboard();
+        }
+
+        function submitScore(points, actionLabel = 'Custom Score') {
+            if (activePlayerId) {
+                applyScore(activePlayerId, points, actionLabel);
+                closeModal();
+            }
+        }
+
+        function submitCustomScore() {
+            const val = parseInt(document.getElementById("custom-score-input").value);
+            if (isNaN(val)) {
+                alert("Please enter a valid number");
+                return;
+            }
+            if (activePlayerId) {
+                applyScore(activePlayerId, val, 'Custom Score');
+                closeModal();
+            }
+        }
+
+        function applyScore(id, points, actionLabel) {
+            pushHistoryState();
+
+            const player = players.find(p => p.id === id);
+            let currentVal = player.rounds[currentRound - 1];
+
+            if (currentVal && typeof currentVal === 'object' && currentVal.isReentryRound) {
+                currentVal.roundScore = points;
+                currentVal.label = actionLabel;
+            } else {
+                player.rounds[currentRound - 1] = { pts: points, label: actionLabel };
+            }
+            
+            let computedTotal = 0;
+            player.rounds.forEach(val => {
+                if (typeof val === 'number') {
+                    computedTotal += val;
+                } else if (val && typeof val === 'object' && val.isReentryRound) {
+                    computedTotal += (val.baseScore + (val.roundScore || 0));
+                } else if (val && typeof val === 'object' && val.pts !== undefined) {
+                    computedTotal += val.pts;
+                }
+            });
+            player.total = computedTotal;
+
+            if (player.total >= TARGET_SCORE) {
+                player.status = 'out';
+                if (!player.eliminatedRound) {
+                    player.eliminatedRound = currentRound;
+                }
+            } else if (player.status === 'out' && player.total < TARGET_SCORE) {
+                player.status = 'active';
+                player.eliminatedRound = null;
+            }
+
+            saveActiveGameToDB();
+            renderDashboard();
+            checkAndAutoAdvanceRound();
+        }
+
+        function rejoinPlayer(id) {
+            const player = players.find(p => p.id === id);
+            if (!player) return;
+
+            // Player eliminated in round N is allowed to rejoin in round N (same round) or round N+1 (the upcoming deal)
+            if (player.eliminatedRound && currentRound > player.eliminatedRound + 1) {
+                alert(`Re-entry closed for ${player.name}! Re-entry is only allowed immediately on the next deal.`);
+                return;
+            }
+
+            const nonOutPlayers = players.filter(p => p.status !== 'out');
+            let maxNonOutScore = nonOutPlayers.length > 0 ? Math.max(...nonOutPlayers.map(p => p.total)) : 0;
+            let maxScoreForReentry = TARGET_SCORE - gameRules.drop - 1; 
+
+            if (maxNonOutScore > maxScoreForReentry) {
+                alert(`Re-entry locked! Active highest score exceeds ${maxScoreForReentry}.`);
+                return;
+            }
+
+            pushHistoryState();
+            gamePool += betAmount;
+
+            const activePlayers = players.filter(p => p.status === 'active');
+            let globalMaxScore = players.length > 0 ? Math.max(...players.map(p => p.total)) : 0;
+            let currentHighest = activePlayers.length > 0 ? Math.max(...activePlayers.map(p => p.total)) : globalMaxScore;
+            
+            reentryLog.push({
+                name: player.name,
+                round: currentRound,
+                amount: betAmount,
+                matchedScore: currentHighest
+            });
+
+            let freshRounds = [];
+            for (let r = 1; r < currentRound; r++) {
+                freshRounds.push("-");
+            }
+            
+            // roundScore set to null so the user can enter current round score
+            freshRounds.push({
+                isReentryRound: true,
+                baseScore: currentHighest,
+                roundScore: null,
+                label: 'Re-entry'
+            });
+
+            player.rounds = freshRounds;
+            player.total = currentHighest;
+            player.status = 'active';
+            player.eliminatedRound = null;
+
+            saveActiveGameToDB();
+            renderDashboard();
+        }
+
+        // --- Live Match Settlement Engine ---
+        function computeCurrentGameSettlement() {
+            const activePlayers = players.filter(p => p.status === 'active');
+            const dropVal = gameRules.drop;
+
+            let details = [];
+            let totalAvailableDrops = 0;
+            let totalExtraPoints = 0;
+
+            activePlayers.forEach(p => {
+                let margin = (TARGET_SCORE - 1) - p.total;
+                if (margin < 0) margin = 0;
+
+                let availableDrops = Math.floor(margin / dropVal);
+                let extraPoints = margin % dropVal;
+
+                totalAvailableDrops += availableDrops;
+                totalExtraPoints += extraPoints;
+
+                let reentries = reentryLog.filter(r => r.name === p.name).length;
+                let invested = betAmount + (reentries * betAmount);
+
+                details.push({
+                    id: p.id,
+                    name: p.name,
+                    score: p.total,
+                    margin: margin,
+                    availableDrops: availableDrops,
+                    extraPoints: extraPoints,
+                    dropSharePayout: 0,
+                    extraPointsPayout: 0,
+                    totalPayout: 0,
+                    initialInvested: invested,
+                    status: 'active'
+                });
+            });
+
+            let totalPool = gamePool;
+            let totalDropWeight = totalAvailableDrops * dropVal;
+            let grandTotalPointsWeight = totalDropWeight + totalExtraPoints;
+
+            let dropPoolAllocation = 0;
+            let extraPointsPoolAllocation = 0;
+            let perDropVal = 0;
+            let perPointVal = 0;
+
+            if (grandTotalPointsWeight > 0) {
+                dropPoolAllocation = (totalDropWeight / grandTotalPointsWeight) * totalPool;
+                extraPointsPoolAllocation = (totalExtraPoints / grandTotalPointsWeight) * totalPool;
+
+                perDropVal = totalAvailableDrops > 0 ? (dropPoolAllocation / totalAvailableDrops) : 0;
+                perPointVal = totalExtraPoints > 0 ? (extraPointsPoolAllocation / totalExtraPoints) : 0;
+
+                details.forEach(d => {
+                    let dropShare = totalAvailableDrops > 0 ? (d.availableDrops / totalAvailableDrops) * dropPoolAllocation : 0;
+                    let extraShare = totalExtraPoints > 0 ? (d.extraPoints / totalExtraPoints) * extraPointsPoolAllocation : 0;
+
+                    d.dropSharePayout = Math.round(dropShare);
+                    d.extraPointsPayout = Math.round(extraShare);
+                    d.totalPayout = d.dropSharePayout + d.extraPointsPayout;
+                });
+
+                let allocatedSum = details.reduce((sum, d) => sum + d.totalPayout, 0);
+                let diff = totalPool - allocatedSum;
+                if (diff !== 0 && details.length > 0) {
+                    let best = [...details].sort((a,b) => a.score - b.score)[0];
+                    best.totalPayout += diff;
+                }
+            } else if (details.length > 0) {
+                let split = Math.floor(totalPool / details.length);
+                details.forEach(d => { d.totalPayout = split; });
+            }
+
+            const outPlayers = players.filter(p => p.status === 'out');
+            let outDetails = outPlayers.map(p => {
+                let reentries = reentryLog.filter(r => r.name === p.name).length;
+                return {
+                    id: p.id,
+                    name: p.name,
+                    score: p.total,
+                    margin: 0,
+                    availableDrops: 0,
+                    extraPoints: 0,
+                    dropSharePayout: 0,
+                    extraPointsPayout: 0,
+                    totalPayout: 0,
+                    initialInvested: betAmount + (reentries * betAmount),
+                    status: 'out'
+                };
+            });
+
+            return {
+                date: new Date().toLocaleString(),
+                round: currentRound,
+                betAmount: betAmount,
+                gamePool: gamePool,
+                targetScore: TARGET_SCORE,
+                dropRule: dropVal,
+                activePlayersCount: activePlayers.length,
+                totalAvailableDrops,
+                totalExtraPoints,
+                dropPoolAllocation: Math.round(dropPoolAllocation),
+                extraPointsPoolAllocation: Math.round(extraPointsPoolAllocation),
+                perDropVal: perDropVal.toFixed(2),
+                perPointVal: perPointVal.toFixed(2),
+                activeBreakdown: details,
+                outBreakdown: outDetails,
+                allParticipants: [...details, ...outDetails]
+            };
+        }
+
+        function triggerMidGameSettlement() {
+            if (players.length === 0 || !isGameStarted) {
+                alert("No active game in progress to settle!");
+                return;
+            }
+
+            currentCalculatedSettlement = computeCurrentGameSettlement();
+
+            // Populate Live Settlement Math Summary Card
+            document.getElementById("math-pool-total").innerText = `Total Pool: ₹${currentCalculatedSettlement.gamePool}`;
+            document.getElementById("math-drops-pool").innerText = `₹${currentCalculatedSettlement.dropPoolAllocation}`;
+            document.getElementById("math-drops-detail").innerText = `${currentCalculatedSettlement.totalAvailableDrops} total drops (₹${currentCalculatedSettlement.perDropVal} / drop)`;
+            
+            document.getElementById("math-points-pool").innerText = `₹${currentCalculatedSettlement.extraPointsPoolAllocation}`;
+            document.getElementById("math-points-detail").innerText = `${currentCalculatedSettlement.totalExtraPoints} total pts (₹${currentCalculatedSettlement.perPointVal} / pt)`;
+
+            document.getElementById("settlement-modal-subtitle").innerText = 
+                `Round ${currentRound} Active Settle | Bet Pool: ₹${gamePool} | Active Players: ${currentCalculatedSettlement.activePlayersCount} | Drop Standard: ${gameRules.drop} Pts`;
+
+            let table = document.getElementById("settlement-table");
+            let html = `
+                <thead>
+                    <tr class="bg-slate-200 border-b-2 border-slate-400 text-slate-800 text-[10px] uppercase">
+                        <th class="p-2 border-r border-slate-400 text-center">Player</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Score</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Avail. Drops</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Extra Pts</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Invested (₹)</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Payout (₹)</th>
+                        <th class="p-2 text-center">Net (₹)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-300">
+            `;
+
+            currentCalculatedSettlement.allParticipants.forEach(p => {
+                let net = p.totalPayout - p.initialInvested;
+                let netClass = net >= 0 ? 'text-emerald-800 font-extrabold' : 'text-red-700 font-extrabold';
+                let netSign = net > 0 ? `+₹${net}` : (net === 0 ? `₹0` : `-₹${Math.abs(net)}`);
+                let isOut = p.status === 'out';
+
+                html += `
+                    <tr class="${isOut ? 'bg-slate-100 opacity-70' : 'hover:bg-slate-50'} transition">
+                        <td class="p-2 border-r border-slate-400 font-black text-slate-900">
+                            ${p.name} ${isOut ? '<span class="text-[9px] text-red-700 font-bold">(Out)</span>' : ''}
+                        </td>
+                        <td class="p-2 border-r border-slate-400 text-center font-bold">${p.score}</td>
+                        <td class="p-2 border-r border-slate-400 text-center font-bold text-teal-900">${p.availableDrops}</td>
+                        <td class="p-2 border-r border-slate-400 text-center font-bold text-amber-800">${p.extraPoints}</td>
+                        <td class="p-2 border-r border-slate-400 text-center font-bold">₹${p.initialInvested}</td>
+                        <td class="p-2 border-r border-slate-400 text-center font-black text-slate-950 bg-emerald-50">₹${p.totalPayout}</td>
+                        <td class="p-2 text-center ${netClass}">${netSign}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody>`;
+            table.innerHTML = html;
+
+            const chk = document.getElementById("settlement-confirm-checkbox");
+            if (chk) chk.checked = false;
+            document.getElementById("settlement-confirm-section").classList.remove("hidden");
+
+            const finishBtn = document.getElementById("settle-finish-btn");
+            finishBtn.disabled = true;
+            finishBtn.classList.remove("hidden", "bg-teal-700", "hover:bg-teal-800", "text-white", "cursor-pointer");
+            finishBtn.classList.add("bg-slate-300", "text-slate-500", "cursor-not-allowed");
+
+            document.getElementById("settlement-modal").classList.remove("hidden");
+            document.getElementById("settlement-modal").classList.add("flex");
+        }
+
+        function toggleSettlementConfirm() {
+            const chk = document.getElementById("settlement-confirm-checkbox");
+            const btn = document.getElementById("settle-finish-btn");
+            if (chk.checked) {
+                btn.disabled = false;
+                btn.classList.remove("bg-slate-300", "text-slate-500", "cursor-not-allowed");
+                btn.classList.add("bg-teal-700", "hover:bg-teal-800", "text-white", "cursor-pointer");
+            } else {
+                btn.disabled = true;
+                btn.classList.remove("bg-teal-700", "hover:bg-teal-800", "text-white", "cursor-pointer");
+                btn.classList.add("bg-slate-300", "text-slate-500", "cursor-not-allowed");
+            }
+        }
+
+        function closeSettlementModal() {
+            document.getElementById("settlement-modal").classList.remove("flex");
+            document.getElementById("settlement-modal").classList.add("hidden");
+        }
+
+        async function saveAndConcludeSettlement() {
+            const chk = document.getElementById("settlement-confirm-checkbox");
+            if (!chk || !chk.checked) {
+                alert("Please tick the confirmation checkbox before concluding.");
+                return;
+            }
+
+            let realSettlementData = computeCurrentGameSettlement();
+
+            const settlementRecord = {
+                ...realSettlementData,
+                playersSnapshot: JSON.parse(JSON.stringify(players)),
+                reentryLog: JSON.parse(JSON.stringify(reentryLog))
+            };
+
+            // 1. Save to dedicated Settlements store
+            await archiveSettlementToDB(settlementRecord);
+
+            // 2. Also save to regular match history with settlement tag
+            let sorted = [...players].sort((a,b) => a.total - b.total);
+            let topPlayer = sorted[0] || { name: 'Settlement Group', total: 0 };
+            await archiveGameToHistory({ name: `${topPlayer.name} (Settled Winner)`, total: topPlayer.total }, true);
+
+            // 3. Clear active game state
+            await clearActiveGameFromDB();
+
+            closeSettlementModal();
+
+            // Reset Game variables
+            players = [];
+            currentRound = 1;
+            gamePool = 0;
+            currentDealerIndex = 0;
+            isGameStarted = false;
+            gameFinished = false;
+            historyStack = [];
+            reentryLog = [];
+
+            // Switch back to setup screen for a fresh game
+            document.getElementById("game-screen").classList.add("hidden");
+            document.getElementById("setup-screen").classList.remove("hidden");
+            document.getElementById("resume-btn").classList.add("hidden");
+            updateSetupUI();
+        }
+
+        function renderDashboard() {
+            let maxReentryScore = TARGET_SCORE - gameRules.drop - 1;
+            document.getElementById("header-reentry-info").innerText = `Target: ${TARGET_SCORE} Pts | Re-entry Allowed up to ${maxReentryScore} Pts (Must Rejoin on Next Deal)`;
+            document.getElementById("game-info-bar").innerHTML = `<span>💰 Bet Pool: ₹${gamePool}</span> <span class="text-[11px] text-slate-600 font-bold ml-2">(Bet: ₹${betAmount} | Round ${currentRound})</span>`;
+            document.getElementById("distributer-info").innerHTML = `🎴 Round ${currentRound} Card Distributer: <span class="text-amber-900 font-black">${getDistributerName()}</span>`;
+
+            const addMidGameBtn = document.getElementById("add-midgame-btn");
+            if (currentRound > 3) {
+                addMidGameBtn.disabled = true;
+                addMidGameBtn.classList.remove("bg-indigo-600", "hover:bg-indigo-700");
+                addMidGameBtn.classList.add("bg-slate-300", "text-slate-500", "cursor-not-allowed", "border-slate-400");
+                addMidGameBtn.innerText = "➕ Mid-Game Closed (>R3)";
+            } else {
+                addMidGameBtn.disabled = false;
+                addMidGameBtn.classList.add("bg-indigo-600", "hover:bg-indigo-700");
+                addMidGameBtn.classList.remove("bg-slate-300", "text-slate-500", "cursor-not-allowed", "border-slate-400");
+                addMidGameBtn.innerText = "➕ Add Mid-Game";
+            }
+
+            renderMatrixTable();
+            renderReentryLog();
+            renderMandatoryPlayPanel();
+            renderStatistics();
+        }
+
+        function renderMatrixTable() {
+            const table = document.getElementById("matrix-table");
+            const nonOutPlayers = players.filter(p => p.status !== 'out');
+            let maxNonOutScore = nonOutPlayers.length > 0 ? Math.max(...nonOutPlayers.map(p => p.total)) : 0;
+            let maxScoreForReentry = TARGET_SCORE - gameRules.drop - 1; 
+            let isReentryLocked = maxNonOutScore > maxScoreForReentry;
+
+            let html = `<thead><tr class="bg-slate-200 border-b-2 border-slate-400 text-slate-800 text-[11px] uppercase tracking-wider">
+                <th class="p-2.5 border-r border-slate-400 text-center w-16">Round</th>`;
+            
+            players.forEach((p, idx) => {
+                html += `<th class="p-2.5 border-r border-slate-400 text-center">
+                    <div class="font-extrabold text-slate-900 text-xs sm:text-sm">${p.name}</div>
+                    <div class="text-[10px] text-slate-600 font-bold">#${idx + 1}</div>
+                </th>`;
+            });
+            html += `</tr></thead><tbody class="divide-y divide-slate-300">`;
+
+            for (let r = 1; r <= currentRound; r++) {
+                html += `<tr class="hover:bg-slate-50 transition">
+                    <td class="p-2 border-r border-slate-400 text-center font-extrabold text-emerald-800 text-xs bg-slate-100">R${r}</td>`;
+                
+                players.forEach(p => {
+                    let scoreVal = p.rounds[r - 1];
+                    let displayVal = "";
+
+                    if (scoreVal !== undefined && scoreVal !== null && scoreVal !== "-") {
+                        if (typeof scoreVal === 'object' && scoreVal.isReentryRound) {
+                            if (scoreVal.roundScore === null) {
+                                displayVal = `<div class="mb-1 text-[10px] font-black text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-300">Base: ${scoreVal.baseScore}</div>
+                                <button onclick="openModal(${p.id})" class="text-[10px] bg-amber-50 hover:bg-amber-100 text-amber-900 border-2 border-amber-500 px-2 py-1 rounded-lg transition font-black shadow-sm">+ Score (Re-entry)</button>`;
+                            } else {
+                                displayVal = `<div class="font-black text-amber-900">${scoreVal.baseScore} + ${scoreVal.roundScore}</div><div class="text-[9px] text-amber-800 font-bold">Re-entry (${scoreVal.label})</div>`;
+                            }
+                        } else if (typeof scoreVal === 'object' && scoreVal.pts !== undefined) {
+                            let labelColor = "text-slate-700";
+                            if (scoreVal.label.includes("Drop") && !scoreVal.label.includes("Middle")) labelColor = "text-amber-800 font-bold";
+                            if (scoreVal.label.includes("Middle")) labelColor = "text-orange-800 font-bold";
+                            if (scoreVal.label.includes("Full Count") || scoreVal.label.includes("Wrong Show")) labelColor = "text-red-700 font-bold";
+                            if (scoreVal.label.includes("Rummy")) labelColor = "text-emerald-800 font-bold";
+
+                            displayVal = `<div class="font-black text-slate-900 text-sm">${scoreVal.pts} Pts</div><div class="text-[9px] ${labelColor}">${scoreVal.label}</div>`;
+                        } else {
+                            displayVal = `<div class="font-black text-slate-900">${scoreVal} Pts</div>`;
+                        }
+                    } else if (scoreVal === "-") {
+                        displayVal = `<span class="text-slate-400 font-black">-</span>`;
+                    } else {
+                        displayVal = `<button onclick="openModal(${p.id})" class="text-[10px] bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-2 border-emerald-600 px-2.5 py-1 rounded-lg transition font-extrabold shadow-sm">+ Score</button>`;
+                    }
+                    html += `<td class="p-2 text-center border-r border-slate-400 text-xs sm:text-sm font-semibold">${displayVal}</td>`;
+                });
+                html += `</tr>`;
+            }
+
+            // Total Score Row
+            html += `<tr class="bg-slate-200 font-black border-t-2 border-slate-500">
+                <td class="p-2 border-r border-slate-400 text-center text-xs text-slate-900">Total Pts</td>`;
+            players.forEach(p => {
+                let computedTotal = 0;
+                p.rounds.forEach(val => {
+                    if (typeof val === 'number') computedTotal += val;
+                    else if (val && typeof val === 'object' && val.isReentryRound) computedTotal += (val.baseScore + (val.roundScore || 0));
+                    else if (val && typeof val === 'object' && val.pts !== undefined) computedTotal += val.pts;
+                });
+                p.total = computedTotal;
+                if (p.total >= TARGET_SCORE && p.status === 'active') {
+                    p.status = 'out';
+                    if (!p.eliminatedRound) p.eliminatedRound = currentRound;
+                }
+                html += `<td class="p-2 text-center border-r border-slate-400 text-slate-950 text-xs sm:text-sm font-black">${p.total}</td>`;
+            });
+            html += `</tr>`;
+
+            // Status Row
+            html += `<tr class="bg-slate-100 border-t border-slate-300">
+                <td class="p-2 border-r border-slate-400 text-center text-[10px] uppercase tracking-wider text-slate-700 font-bold">Status</td>`;
+            players.forEach(p => {
+                let statusBadge = p.status === 'active' 
+                    ? `<span class="bg-emerald-100 text-emerald-900 border border-emerald-500 text-[9px] px-2 py-0.5 rounded-full font-black">Active</span>`
+                    : `<span class="bg-red-100 text-red-900 border border-red-500 text-[9px] px-2 py-0.5 rounded-full font-black">Out</span>`;
+
+                let statusTabContent = `<div class="flex flex-col items-center justify-center gap-1">`;
+                statusTabContent += statusBadge;
+                
+                if (p.status === 'out') {
+                    let missedRound = p.eliminatedRound && currentRound > p.eliminatedRound + 1;
+                    if (missedRound) {
+                        statusTabContent += `<span class="text-[8px] bg-red-200 text-red-950 px-1.5 py-0.5 rounded font-black border border-red-400">⛔ Rejoin Expired</span>`;
+                    } else if (!isReentryLocked) {
+                        statusTabContent += `<button onclick="rejoinPlayer(${p.id})" class="text-[9px] bg-amber-200 hover:bg-amber-300 text-amber-950 border border-amber-500 px-2 py-0.5 rounded font-black transition shadow-sm">🔄 Rejoin</button>`;
+                    } else {
+                        statusTabContent += `<span class="text-[8px] bg-slate-300 text-slate-700 px-1 py-0.5 rounded font-bold">Locked</span>`;
+                    }
+                }
+                statusTabContent += `<button onclick="openModal(${p.id})" class="text-[9px] bg-white hover:bg-slate-100 text-slate-800 border border-slate-400 px-2 py-0.5 rounded font-bold transition">Edit</button>`;
+                statusTabContent += `</div>`;
+
+                html += `<td class="p-2 text-center border-r border-slate-400">${statusTabContent}</td>`;
+            });
+            html += `</tr>`;
+
+            html += `</tbody>`;
+            table.innerHTML = html;
+        }
+
+        function renderReentryLog() {
+            const container = document.getElementById("reentry-log-list");
+            const countBadge = document.getElementById("reentry-count");
+
+            countBadge.innerText = `${reentryLog.length} Re-entr${reentryLog.length === 1 ? 'y' : 'ies'}`;
+
+            if (reentryLog.length === 0) {
+                container.innerHTML = `<p class="text-[11px] text-slate-600 font-medium italic">No re-entries recorded yet.</p>`;
+                return;
+            }
+
+            container.innerHTML = reentryLog.map((log, idx) => `
+                <div class="bg-white border-2 border-amber-300 p-2 rounded-xl flex justify-between items-center text-xs">
+                    <div>
+                        <span class="font-extrabold text-amber-900">${idx + 1}. ${log.name}</span>
+                        <div class="text-[9px] text-slate-600 font-bold">Round ${log.round} | Fresh: ${log.matchedScore} Pts</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-teal-900 font-black">+₹${log.amount}</span>
+                        <div class="text-[9px] text-slate-600 font-bold">Pool</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderMandatoryPlayPanel() {
+            const container = document.getElementById("mandatory-play-list");
+            let mandatoryThreshold = TARGET_SCORE - gameRules.drop;
+            document.getElementById("mandatory-threshold-badge").innerText = `${mandatoryThreshold}+ Pts`;
+            
+            const mandatoryPlayers = players.filter(p => p.total >= mandatoryThreshold && p.status === 'active');
+
+            if (mandatoryPlayers.length === 0) {
+                container.innerHTML = `<p class="text-[11px] text-red-900/70 font-semibold italic">No players at or above ${mandatoryThreshold} points.</p>`;
+                return;
+            }
+
+            container.innerHTML = mandatoryPlayers.map(p => `
+                <div class="flex justify-between items-center bg-white border-2 border-red-300 p-2 rounded-xl shadow-sm">
+                    <span class="font-black text-red-950 text-xs">${p.name}</span>
+                    <span class="bg-red-100 text-red-900 border border-red-400 text-[10px] px-2 py-0.5 rounded-lg font-black">${p.total} Pts</span>
+                </div>
+            `).join('');
+        }
+
+        function renderStatistics() {
+            const statsEl = document.getElementById("stats-content");
+            const activeOnly = players.filter(p => p.status === 'active');
+            let sortedActive = [...activeOnly].sort((a, b) => a.total - b.total);
+            
+            let leader = sortedActive[0];
+            let leaderText = leader ? leader.name : '-';
+            let leaderScore = leader ? leader.total : 0;
+            if (leader) {
+                let tiedLeaders = activeOnly.filter(p => p.total === leader.total);
+                if (tiedLeaders.length > 1) {
+                    leaderText = tiedLeaders.map(p => p.name).join(', ');
+                }
+            }
+
+            let highest = sortedActive[sortedActive.length - 1];
+            let highestText = highest ? highest.name : '-';
+            let highestScore = highest ? highest.total : 0;
+            if (highest) {
+                let tiedHighest = activeOnly.filter(p => p.total === highest.total);
+                if (tiedHighest.length > 1) {
+                    highestText = tiedHighest.map(p => p.name).join(', ');
+                }
+            }
+
+            statsEl.innerHTML = `
+                <div class="bg-emerald-50 border-2 border-emerald-300 p-2.5 rounded-xl flex items-center justify-between shadow-sm">
+                    <div>
+                        <div class="text-[9px] uppercase tracking-wider text-emerald-900 font-black">Leader (Min Score)</div>
+                        <div class="font-extrabold text-emerald-950 text-xs leading-tight">${leaderText}</div>
+                    </div>
+                    <div class="text-emerald-900 font-black text-base shrink-0 ml-2">${leaderScore}</div>
+                </div>
+
+                <div class="bg-red-50 border-2 border-red-300 p-2.5 rounded-xl flex items-center justify-between shadow-sm">
+                    <div>
+                        <div class="text-[9px] uppercase tracking-wider text-red-900 font-black">Highest Risk (Active Max)</div>
+                        <div class="font-extrabold text-red-950 text-xs leading-tight">${highestText}</div>
+                    </div>
+                    <div class="text-red-900 font-black text-base shrink-0 ml-2">${highestScore}</div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-white border-2 border-slate-300 p-2.5 rounded-xl text-center">
+                        <div class="text-[9px] uppercase tracking-wider text-slate-700 font-bold">Active / Total</div>
+                        <div class="font-black text-slate-900 text-xs mt-0.5">${activeOnly.length} / ${players.length}</div>
+                    </div>
+                    <div class="bg-white border-2 border-slate-300 p-2.5 rounded-xl text-center">
+                        <div class="text-[9px] uppercase tracking-wider text-slate-700 font-bold">Pool Value</div>
+                        <div class="font-black text-emerald-800 text-xs mt-0.5">₹${gamePool}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- History & Settlements Modal Handlers ---
+        async function openHistoryModal() {
+            await renderHistoryContent();
+            document.getElementById("history-modal").classList.remove("hidden");
+            document.getElementById("history-modal").classList.add("flex");
+        }
+
+        function switchHistoryTab(tab) {
+            activeHistoryTab = tab;
+            const btnMatches = document.getElementById("history-tab-matches");
+            const btnSettlements = document.getElementById("history-tab-settlements");
+
+            if (tab === 'matches') {
+                btnMatches.className = "text-xs bg-slate-800 text-white font-bold px-3 py-1.5 rounded-lg";
+                btnSettlements.className = "text-xs bg-slate-200 text-slate-800 font-bold px-3 py-1.5 rounded-lg hover:bg-slate-300";
+            } else {
+                btnSettlements.className = "text-xs bg-teal-800 text-white font-bold px-3 py-1.5 rounded-lg";
+                btnMatches.className = "text-xs bg-slate-200 text-slate-800 font-bold px-3 py-1.5 rounded-lg hover:bg-slate-300";
+            }
+            renderHistoryContent();
+        }
+
+        async function renderHistoryContent() {
+            const container = document.getElementById("history-list-container");
+
+            if (activeHistoryTab === 'matches') {
+                const records = await fetchGameHistory();
+                cachedHistoryRecords = records;
+
+                if (!records || records.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-slate-500 italic text-center py-6">No match history stored yet.</p>`;
+                } else {
+                    container.innerHTML = records.map((rec, i) => `
+                        <div class="bg-slate-50 border-2 border-slate-300 p-3 rounded-xl space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-extrabold text-slate-900">Game #${rec.matchId || i + 1} &bull; ${rec.date}</span>
+                                <span class="${rec.isSettledMatch ? 'bg-teal-100 text-teal-900 border-teal-400' : 'bg-emerald-100 text-emerald-900 border-emerald-400'} font-black px-2 py-0.5 rounded border">
+                                    ${rec.isSettledMatch ? '🤝 Settled Match' : `Winner: ${rec.winner?.name || 'N/A'}`}
+                                </span>
+                            </div>
+                            <div class="text-[11px] text-slate-600 font-semibold flex justify-between">
+                                <span>Pool: <b>₹${rec.gamePool}</b> | Rounds: <b>${rec.totalRounds}</b></span>
+                                <span>Target: <b>${rec.targetScore} Pts</b></span>
+                            </div>
+                            <div class="text-[10px] text-slate-700 bg-white p-2 rounded-lg border border-slate-300 flex flex-wrap gap-2">
+                                ${rec.players.map(p => `<span class="font-bold">${p.name}: <span class="text-slate-950 font-black">${p.total} pts</span></span>`).join(' | ')}
+                            </div>
+                            <div class="pt-1 flex justify-between items-center">
+                                <button onclick="removeIndividualHistory(${rec.matchId})" class="text-xs bg-red-50 hover:bg-red-100 text-red-700 border border-red-300 hover:border-red-400 px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1">
+                                    🗑️ Delete
+                                </button>
+                                <button onclick="viewScoreboardDetail(${i})" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border-2 border-indigo-400 px-3 py-1 rounded-lg font-bold transition shadow-sm flex items-center gap-1">
+                                    📊 View Full Scoreboard
+                                </button>
+                            </div>
+                        </div>
+                    `).reverse().join('');
+                }
+            } else {
+                const settlements = await fetchSettlementHistory();
+                cachedSettlementRecords = settlements;
+
+                if (!settlements || settlements.length === 0) {
+                    container.innerHTML = `<p class="text-xs text-slate-500 italic text-center py-6">No mid-game settlement records stored yet.</p>`;
+                } else {
+                    container.innerHTML = settlements.map((set, i) => `
+                        <div class="bg-teal-50/50 border-2 border-teal-300 p-3 rounded-xl space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-extrabold text-teal-950">Settlement #${set.settlementId || i + 1} &bull; ${set.date}</span>
+                                <span class="bg-teal-100 text-teal-900 font-black px-2 py-0.5 rounded border border-teal-400">Round ${set.round} Settle</span>
+                            </div>
+                            <div class="text-[11px] text-slate-700 font-semibold flex justify-between">
+                                <span>Pool: <b>₹${set.gamePool}</b> | Active Players: <b>${set.activePlayersCount}</b></span>
+                                <span>Total Avail. Drops: <b>${set.totalAvailableDrops}</b></span>
+                            </div>
+                            <div class="text-[10px] text-slate-800 bg-white p-2 rounded-lg border border-teal-200 flex flex-wrap gap-2">
+                                ${set.allParticipants.map(p => `
+                                    <span class="font-bold">${p.name}: <span class="text-emerald-800 font-black">₹${p.totalPayout}</span> (${p.score} pts)</span>
+                                `).join(' | ')}
+                            </div>
+                            <div class="pt-1 flex justify-between items-center">
+                                <button onclick="removeIndividualSettlement(${set.settlementId})" class="text-xs bg-red-50 hover:bg-red-100 text-red-700 border border-red-300 hover:border-red-400 px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1">
+                                    🗑️ Delete
+                                </button>
+                                <button onclick="viewHistoricalSettlementModal(${set.settlementId})" class="text-xs bg-teal-100 hover:bg-teal-200 text-teal-950 border-2 border-teal-600 px-3 py-1 rounded-lg font-black transition shadow-sm flex items-center gap-1">
+                                    🤝 View Breakdown Table
+                                </button>
+                            </div>
+                        </div>
+                    `).reverse().join('');
+                }
+            }
+        }
+
+        function viewHistoricalSettlementModal(settlementId) {
+            const set = cachedSettlementRecords.find(s => s.settlementId === settlementId);
+            if (!set) return;
+
+            document.getElementById("math-pool-total").innerText = `Total Pool: ₹${set.gamePool}`;
+            document.getElementById("math-drops-pool").innerText = `₹${set.dropPoolAllocation || 0}`;
+            document.getElementById("math-drops-detail").innerText = `${set.totalAvailableDrops || 0} total drops (₹${set.perDropVal || 0} / drop)`;
+            
+            document.getElementById("math-points-pool").innerText = `₹${set.extraPointsPoolAllocation || 0}`;
+            document.getElementById("math-points-detail").innerText = `${set.totalExtraPoints || 0} total pts (₹${set.perPointVal || 0} / pt)`;
+
+            document.getElementById("settlement-modal-subtitle").innerText = 
+                `Historical Record #${set.settlementId} &bull; Date: ${set.date} | Pool: ₹${set.gamePool} | Round ${set.round}`;
+
+            let table = document.getElementById("settlement-table");
+            let html = `
+                <thead>
+                    <tr class="bg-slate-200 border-b-2 border-slate-400 text-slate-800 text-[10px] uppercase">
+                        <th class="p-2 border-r border-slate-400 text-center">Player</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Score</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Avail. Drops</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Extra Pts</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Invested (₹)</th>
+                        <th class="p-2 border-r border-slate-400 text-center">Payout (₹)</th>
+                        <th class="p-2 text-center">Net (₹)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-300">
+            `;
+
+            set.allParticipants.forEach(p => {
+                let net = p.totalPayout - p.initialInvested;
+                let netClass = net >= 0 ? 'text-emerald-800 font-extrabold' : 'text-red-700 font-extrabold';
+                let netSign = net > 0 ? `+₹${net}` : (net === 0 ? `₹0` : `-₹${Math.abs(net)}`);
+                let isOut = p.status === 'out';
+
+                html += `
+                    <tr class="${isOut ? 'bg-slate-100 opacity-70' : 'hover:bg-slate-50'} transition">
+                        <td class="p-2 border-r border-slate-400 font-black text-slate-900">
+                            ${p.name} ${isOut ? '<span class="text-[9px] text-red-700 font-bold">(Out)</span>' : ''}
+                        </td>
+                        <td class="p-2 border-r border-slate-400 text-center font-bold">${p.score}</td>
+                        <td class="p-2 border-r border-slate-400 text-center font-bold text-teal-900">${p.availableDrops}</td>
+                        <td class="p-2 border-r border-slate-400 text-center font-bold text-amber-800">${p.extraPoints}</td>
+                        <td class="p-2 border-r border-slate-400 text-center font-bold">₹${p.initialInvested}</td>
+                        <td class="p-2 border-r border-slate-400 text-center font-black text-slate-950 bg-emerald-50">₹${p.totalPayout}</td>
+                        <td class="p-2 text-center ${netClass}">${netSign}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody>`;
+            table.innerHTML = html;
+
+            document.getElementById("settlement-confirm-section").classList.add("hidden");
+            document.getElementById("settle-finish-btn").classList.add("hidden");
+            document.getElementById("settlement-modal").classList.remove("hidden");
+            document.getElementById("settlement-modal").classList.add("flex");
+        }
+
+        async function removeIndividualHistory(matchId) {
+            if (!matchId) return;
+            if (confirm(`Are you sure you want to delete match #${matchId} from history?`)) {
+                await deleteSingleHistoryDB(matchId);
+                renderHistoryContent();
+            }
+        }
+
+        async function removeIndividualSettlement(settlementId) {
+            if (!settlementId) return;
+            if (confirm(`Are you sure you want to delete settlement #${settlementId}?`)) {
+                await deleteSingleSettlementDB(settlementId);
+                renderHistoryContent();
+            }
+        }
+
+        function closeHistoryModal() {
+            document.getElementById("history-modal").classList.remove("flex");
+            document.getElementById("history-modal").classList.add("hidden");
+        }
+
+        function viewScoreboardDetail(recordIndex) {
+            const rec = cachedHistoryRecords[recordIndex];
+            if (!rec) return;
+
+            document.getElementById("history-detail-title").innerText = `📊 Match Scoreboard (#${rec.matchId || recordIndex + 1})`;
+            document.getElementById("history-detail-subtitle").innerText = `Date: ${rec.date} | Pool: ₹${rec.gamePool} | Target: ${rec.targetScore} Pts | Winner: ${rec.winner?.name || 'N/A'}`;
+
+            const table = document.getElementById("history-detail-table");
+            const maxRounds = rec.totalRounds || Math.max(...rec.players.map(p => p.rounds?.length || 0), 1);
+
+            let html = `<thead><tr class="bg-slate-200 border-b-2 border-slate-400 text-slate-800 text-[11px] uppercase tracking-wider">
+                <th class="p-2.5 border-r border-slate-400 text-center w-16">Round</th>`;
+            
+            rec.players.forEach((p, idx) => {
+                html += `<th class="p-2.5 border-r border-slate-400 text-center">
+                    <div class="font-extrabold text-slate-900 text-xs sm:text-sm">${p.name}</div>
+                    <div class="text-[10px] text-slate-600 font-bold">#${idx + 1}</div>
+                </th>`;
+            });
+            html += `</tr></thead><tbody class="divide-y divide-slate-300">`;
+
+            for (let r = 1; r <= maxRounds; r++) {
+                html += `<tr class="hover:bg-slate-50 transition">
+                    <td class="p-2 border-r border-slate-400 text-center font-extrabold text-emerald-800 text-xs bg-slate-100">R${r}</td>`;
+                
+                rec.players.forEach(p => {
+                    let scoreVal = p.rounds ? p.rounds[r - 1] : undefined;
+                    let displayVal = "";
+
+                    if (scoreVal !== undefined && scoreVal !== null && scoreVal !== "-") {
+                        if (typeof scoreVal === 'object' && scoreVal.isReentryRound) {
+                            displayVal = `<div class="font-black text-amber-900">${scoreVal.baseScore} + ${scoreVal.roundScore !== null ? scoreVal.roundScore : 0}</div><div class="text-[9px] text-amber-800 font-bold">Re-entry</div>`;
+                        } else if (typeof scoreVal === 'object' && scoreVal.pts !== undefined) {
+                            let labelColor = "text-slate-700";
+                            if (scoreVal.label && scoreVal.label.includes("Drop") && !scoreVal.label.includes("Middle")) labelColor = "text-amber-800 font-bold";
+                            if (scoreVal.label && scoreVal.label.includes("Middle")) labelColor = "text-orange-800 font-bold";
+                            if (scoreVal.label && (scoreVal.label.includes("Full Count") || scoreVal.label.includes("Wrong Show"))) labelColor = "text-red-700 font-bold";
+                            if (scoreVal.label && scoreVal.label.includes("Rummy")) labelColor = "text-emerald-800 font-bold";
+
+                            displayVal = `<div class="font-black text-slate-900 text-sm">${scoreVal.pts} Pts</div><div class="text-[9px] ${labelColor}">${scoreVal.label}</div>`;
+                        } else {
+                            displayVal = `<div class="font-black text-slate-900">${scoreVal} Pts</div>`;
+                        }
+                    } else {
+                        displayVal = `<span class="text-slate-400 font-black">-</span>`;
+                    }
+                    html += `<td class="p-2 text-center border-r border-slate-400 text-xs sm:text-sm font-semibold">${displayVal}</td>`;
+                });
+                html += `</tr>`;
+            }
+
+            // Total Row
+            html += `<tr class="bg-slate-200 font-black border-t-2 border-slate-500">
+                <td class="p-2 border-r border-slate-400 text-center text-xs text-slate-900">Total Pts</td>`;
+            rec.players.forEach(p => {
+                html += `<td class="p-2 text-center border-r border-slate-400 text-slate-950 text-xs sm:text-sm font-black">${p.total}</td>`;
+            });
+            html += `</tr>`;
+
+            // Status Row
+            html += `<tr class="bg-slate-100 border-t border-slate-300">
+                <td class="p-2 border-r border-slate-400 text-center text-[10px] uppercase tracking-wider text-slate-700 font-bold">Status</td>`;
+            rec.players.forEach(p => {
+                let statusBadge = p.status === 'active' 
+                    ? `<span class="bg-emerald-100 text-emerald-900 border border-emerald-500 text-[9px] px-2 py-0.5 rounded-full font-black">Winner/Active</span>`
+                    : `<span class="bg-red-100 text-red-900 border border-red-500 text-[9px] px-2 py-0.5 rounded-full font-black">Out</span>`;
+                html += `<td class="p-2 text-center border-r border-slate-400">${statusBadge}</td>`;
+            });
+            html += `</tr>`;
+
+            html += `</tbody>`;
+            table.innerHTML = html;
+
+            document.getElementById("history-detail-modal").classList.remove("hidden");
+            document.getElementById("history-detail-modal").classList.add("flex");
+        }
+
+        function closeHistoryDetailModal() {
+            document.getElementById("history-detail-modal").classList.remove("flex");
+            document.getElementById("history-detail-modal").classList.add("hidden");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <title>Scoreboard | Rummy Elite</title>
+    <link rel="icon" type="image/svg+xml" href="icon.svg" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="scoreboard">
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <img src="icon.svg" alt="Rummy Elite logo" />
+          <span>Rummy Elite</span>
+        </div>
+
+        <nav class="nav" aria-label="Main navigation">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="scoreboard.html" class="nav-link active">Scoreboard</a>
+          <a href="players.html" class="nav-link">Players</a>
+          <a href="settings.html" class="nav-link">Settings</a>
+        </nav>
+
+        <button id="installBtn" class="btn btn-primary hidden" type="button">Install App</button>
+      </header>
+
+      <main class="container">
+        <section class="panel">
+          <div class="section-header">
+            <h1>Live Scoreboard</h1>
+            <div class="section-actions">
+              <button id="resetScores" type="button" class="btn btn-secondary">Reset all scores</button>
+            </div>
+          </div>
+
+          <form id="scoreboardForm" class="scoreboard-form">
+            <div id="scoreboardEntries" class="scoreboard-entries"></div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Save round</button>
+              <button type="button" id="clearInputs" class="btn btn-secondary">Clear inputs</button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

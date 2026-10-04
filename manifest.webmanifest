@@ -1,0 +1,374 @@
+const STORAGE_KEY = 'rummy-elite-scoreboard-v1';
+
+function makeId() {
+  if (window.crypto && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function createDefaultState() {
+  return {
+    players: [
+      { id: makeId(), name: 'Player 1', score: 0 },
+      { id: makeId(), name: 'Player 2', score: 0 },
+      { id: makeId(), name: 'Player 3', score: 0 }
+    ],
+    rounds: [],
+    config: {
+      theme: 'dark'
+    }
+  };
+}
+
+function loadState() {
+  const fallback = createDefaultState();
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      return fallback;
+    }
+
+    const parsed = JSON.parse(raw);
+
+    return {
+      players: Array.isArray(parsed.players) && parsed.players.length ? parsed.players : fallback.players,
+      rounds: Array.isArray(parsed.rounds) ? parsed.rounds : [],
+      config: {
+        ...fallback.config,
+        ...(parsed.config || {})
+      }
+    };
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function formatTimeStamp(value) {
+  if (!value) {
+    return 'Just now';
+  }
+
+  return new Date(value).toLocaleString([], {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  });
+}
+
+function applyTheme(theme) {
+  document.body.dataset.theme = theme || 'dark';
+  const toggleButtons = document.querySelectorAll('[data-theme]');
+  toggleButtons.forEach((button) => {
+    button.classList.toggle('active', button.dataset.theme === (theme || 'dark'));
+  });
+}
+
+function getSortedPlayers(players) {
+  return [...players].sort((a, b) => a.score - b.score);
+}
+
+function renderHome(state) {
+  const players = state.players;
+  const sorted = getSortedPlayers(players);
+  const leader = sorted[0];
+
+  document.getElementById('summaryPlayers').textContent = String(players.length);
+  document.getElementById('summaryLeader').textContent = leader ? leader.name : '–';
+  document.getElementById('summaryRounds').textContent = String(state.rounds.length);
+  document.getElementById('summaryTheme').textContent = state.config.theme === 'light' ? 'Light' : 'Dark';
+
+  const leaderboardEl = document.getElementById('leaderboardList');
+  if (!leaderboardEl) return;
+
+  if (!players.length) {
+    leaderboardEl.innerHTML = '<p class="empty-state">No players yet. Add a few players to begin.</p>';
+    return;
+  }
+
+  const leaderboardHtml = [...sorted]
+    .reverse()
+    .map((player, index) => `
+      <div class="leader-row">
+        <div class="player-meta">
+          <strong>#${index + 1} ${player.name}</strong>
+          <span class="muted">${index === sorted.length - 1 ? 'Current leader' : 'In play'}</span>
+        </div>
+        <span class="player-score">${player.score}</span>
+      </div>
+    `)
+    .join('');
+
+  leaderboardEl.innerHTML = leaderboardHtml;
+
+  const roundsEl = document.getElementById('recentRounds');
+  if (!state.rounds.length) {
+    roundsEl.innerHTML = '<p class="empty-state">No rounds captured yet.</p>';
+    return;
+  }
+
+  roundsEl.innerHTML = state.rounds
+    .slice(0, 5)
+    .map((round) => {
+      const entries = round.entries
+        .map((entry) => `${entry.name}: ${entry.total}`)
+        .join(', ');
+
+      return `
+        <div class="round-row">
+          <div class="round-meta">
+            <strong>Round ${round.number}</strong>
+            <span>${formatTimeStamp(round.timestamp)}</span>
+          </div>
+          <span class="round-score">${entries}</span>
+        </div>
+      `;
+    })
+    .join('');
+}
+
+function renderPlayersPage(state) {
+  const playersList = document.getElementById('playersList');
+  if (!playersList) return;
+
+  if (!state.players.length) {
+    playersList.innerHTML = '<p class="empty-state">No players added yet.</p>';
+    return;
+  }
+
+  playersList.innerHTML = state.players
+    .map(
+      (player) => `
+        <div class="player-card">
+          <div class="player-meta">
+            <strong>${player.name}</strong>
+            <span>${player.score} pts</span>
+          </div>
+          <button type="button" class="btn btn-secondary" data-remove-player="${player.id}">Remove</button>
+        </div>
+      `
+    )
+    .join('');
+
+  const removeButtons = playersList.querySelectorAll('[data-remove-player]');
+  removeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const { state: playerState } = window;
+      playerState.players = playerState.players.filter((player) => player.id !== button.dataset.removePlayer);
+      saveState(playerState);
+      window.location.reload();
+    });
+  });
+}
+
+function renderScoreboardPage(state) {
+  const entriesEl = document.getElementById('scoreboardEntries');
+  if (!entriesEl) return;
+
+  if (!state.players.length) {
+    entriesEl.innerHTML = '<p class="empty-state">Add players to begin tracking scores.</p>';
+    return;
+  }
+
+  entriesEl.innerHTML = state.players
+    .map(
+      (player) => `
+        <div class="score-row">
+          <div class="player-name">
+            <strong>${player.name}</strong>
+            <span class="muted">Current: ${player.score}</span>
+          </div>
+          <span class="player-score-total">${player.score}</span>
+          <input
+            type="number"
+            class="score-input"
+            data-player-id="${player.id}"
+            value="0"
+            placeholder="0"
+            aria-label="Adjust ${player.name} score"
+          />
+        </div>
+      `
+    )
+    .join('');
+
+  const form = document.getElementById('scoreboardForm');
+  if (!form) return;
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const adjustments = {};
+    form.querySelectorAll('.score-input').forEach((input) => {
+      const playerId = input.dataset.playerId;
+      const value = Number(input.value || 0);
+      if (value !== 0) {
+        adjustments[playerId] = value;
+      }
+    });
+
+    if (!Object.keys(adjustments).length) {
+      return;
+    }
+
+    const updatedPlayers = state.players.map((player) => {
+      const delta = adjustments[player.id] || 0;
+      return {
+        ...player,
+        score: player.score + delta
+      };
+    });
+
+    const round = {
+      id: makeId(),
+      number: state.rounds.length + 1,
+      timestamp: new Date().toISOString(),
+      entries: updatedPlayers.map((player) => ({
+        name: player.name,
+        total: player.score
+      }))
+    };
+
+    state.players = updatedPlayers;
+    state.rounds.unshift(round);
+    saveState(state);
+    window.location.href = 'index.html';
+  });
+
+  document.getElementById('clearInputs').addEventListener('click', () => {
+    form.querySelectorAll('.score-input').forEach((input) => {
+      input.value = 0;
+    });
+  });
+
+  document.getElementById('resetScores').addEventListener('click', () => {
+    if (!window.confirm('Reset all player scores?')) {
+      return;
+    }
+
+    state.players = state.players.map((player) => ({ ...player, score: 0 }));
+    saveState(state);
+    window.location.reload();
+  });
+}
+
+function renderSettingsPage(state) {
+  applyTheme(state.config.theme);
+
+  const themeButtons = document.querySelectorAll('[data-theme]');
+  themeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      state.config.theme = button.dataset.theme;
+      applyTheme(state.config.theme);
+      saveState(state);
+    });
+  });
+
+  const resetButton = document.getElementById('resetAllData');
+  if (resetButton) {
+    resetButton.addEventListener('click', () => {
+      if (!window.confirm('Reset all saved game data? This cannot be undone.')) {
+        return;
+      }
+
+      const fresh = createDefaultState();
+      saveState(fresh);
+      window.location.href = 'index.html';
+    });
+  }
+}
+
+function setupInstallPrompt() {
+  const installButton = document.getElementById('installBtn');
+  if (!installButton) return;
+
+  let deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+    installButton.classList.remove('hidden');
+  });
+
+  installButton.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+      return;
+    }
+
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    installButton.classList.add('hidden');
+  });
+}
+
+function bindPlayerForm(state) {
+  const playerForm = document.getElementById('addPlayerForm');
+  if (!playerForm) return;
+
+  playerForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const input = document.getElementById('playerName');
+    const value = input.value.trim();
+
+    if (!value) {
+      return;
+    }
+
+    if (state.players.some((player) => player.name.toLowerCase() === value.toLowerCase())) {
+      window.alert('That player already exists.');
+      return;
+    }
+
+    state.players.push({
+      id: makeId(),
+      name: value,
+      score: 0
+    });
+
+    saveState(state);
+    input.value = '';
+    window.location.reload();
+  });
+}
+
+function init() {
+  const state = loadState();
+  window.state = state;
+
+  const page = document.body.dataset.page;
+  applyTheme(state.config.theme);
+  setupInstallPrompt();
+
+  if (page === 'dashboard' || page === 'home') {
+    renderHome(state);
+  }
+
+  if (page === 'players') {
+    bindPlayerForm(state);
+    renderPlayersPage(state);
+  }
+
+  if (page === 'scoreboard') {
+    renderScoreboardPage(state);
+  }
+
+  if (page === 'settings') {
+    renderSettingsPage(state);
+  }
+
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach((link) => {
+    const isCurrent = link.classList.contains('active');
+    if (isCurrent) {
+      link.setAttribute('aria-current', 'page');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
